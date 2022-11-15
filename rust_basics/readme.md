@@ -225,3 +225,114 @@ Clean the project:
         println!("{}", element);
     }
 ```
+
+### Ownership
+
+Default move of heap-based objects, differs from shallow copy: it invalidates the first variable
+
+```rust
+    let s1 = String::from("Literal");
+    let s2 = s1;
+
+    // Won't compile: value borrowed here after move
+    //println!("{}", s1);
+    println!("{}", s2);
+```
+
+Cloning of heap-based objects, creates a deep copy
+
+```rust
+    let s3 = s2.clone();
+    println!("{}", s3);
+```
+
+Function taking a heap-based object became an owner
+
+```rust
+    fn take_ownership(text: String) {
+        println!("{}", text);
+    }
+
+    let s4 = String::from("Object");
+    take_ownership(s4);
+    // Won't compile: borrow of moved value: `s4`
+    //println!("{}", s4);
+```
+
+Function taking a reference is not an owner
+
+```rust
+    fn take_reference(text: &String) {
+        println!("{}", text);
+    }
+
+    let s5 = String::from("Reference");
+    take_reference(&s5);
+    println!("{}", s5);
+```
+
+Mutable reference
+
+```rust
+    // Function taking a mutable reference to heap-based object
+    fn take_mutable_reference(text: &mut String) {
+        text.push_str("!");
+        println!("{}", text);
+    }
+
+    let mut s6 = String::from("Mutable Reference");
+    take_mutable_reference(&mut s6);
+```
+
+There can be only a one mutable reference to the heap-based object
+
+```rust
+    let mut s7 = String::from("Another mutable");
+    let s8 = &mut s7;
+
+    // Won't compile: cannot borrow `s7` as mutable more than once at a time
+    //let s9 = &mut s7;
+    println!("{}", s8);
+```
+
+Scopes make a difference
+
+```rust
+    // Here it will work - s9 is out of scope before creating next reference
+    {
+        let s9 = &mut s7;
+        println!("{}", s9);
+    }
+
+    let mut s10 = &mut s7;
+    println!("{}", s10);
+```
+
+Mixing immutable and mutable references - no way. Unless... immutables are not used after creating a mutable
+
+```rust
+    let mut s10 = &mut s7;
+    println!("{}", s10);
+
+    // Mixing mutable and immutable references
+    let s11 = &s10;
+    let s12 = &s10;
+
+    // Won't compile: cannot borrow `s10` as mutable because it is also borrowed as immutable
+    //let s13 = &mut s10;
+
+    println!("{}, {}", s11, s12);
+
+    // Now works
+    let s13 = &mut s10;
+    println!("{}", s13);
+```
+
+Dangling references
+
+```rust
+    // This won't even compile: missing lifetime specifier
+    // fn dangling_reference() -> &String {
+    //     &String::from("Dangling");
+    // }
+```

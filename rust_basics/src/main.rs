@@ -17,6 +17,28 @@ fn foobar(value: u8, label: char) -> bool {
     return false;
 }
 
+// Function taking an ownership of heap-based object
+fn take_ownership(text: String) {
+    println!("{}", text);
+}
+
+// Function taking a reference to heap-based object
+fn take_reference(text: &String) {
+    println!("{}", text);
+}
+
+// Function taking a mutable reference to heap-based object
+fn take_mutable_reference(text: &mut String) {
+    text.push_str("!");
+    println!("{}", text);
+}
+
+// Function returning dangling reference
+// This won't even compile: missing lifetime specifier
+// fn dangling_reference() -> &String {
+//     &String::from("Dangling");
+// }
+
 fn main()
 {
     println!("Rust basics");
@@ -179,6 +201,65 @@ fn main()
         for element in 5..7 {
             println!("{}", element);
         }
+    }
+
+    // Ownership
+    {
+        let s1 = String::from("Literal");
+        let s2 = s1;
+
+        // Won't compile: value borrowed here after move
+        //println!("{}", s1);
+        println!("{}", s2);
+
+        // Deep copy - cloning
+        let s3 = s2.clone();
+        println!("{}", s3);
+
+        let s4 = String::from("Object");
+        take_ownership(s4);
+        // Won't compile: borrow of moved value: `s4`
+        //println!("{}", s4);
+
+        // Just a reference
+        let s5 = String::from("Reference");
+        take_reference(&s5);
+        println!("{}", s5);
+
+        // Mutable reference
+        let mut s6 = String::from("Mutable Reference");
+        take_mutable_reference(&mut s6);
+
+        let mut s7 = String::from("Another mutable");
+        let s8 = &mut s7;
+
+        // Won't compile: cannot borrow `s7` as mutable more than once at a time
+        //let s9 = &mut s7;
+        println!("{}", s8);
+
+        // Here it will work - s9 is out of scope before creating next reference
+        {
+            let s9 = &mut s7;
+            println!("{}", s9);
+        }
+
+        let mut s10 = &mut s7;
+        println!("{}", s10);
+
+        // Mixing mutable and immutable references
+        let s11 = &s10;
+        let s12 = &s10;
+
+        // Won't compile: cannot borrow `s10` as mutable because it is also borrowed as immutable
+        //let s13 = &mut s10;
+
+        println!("{}, {}", s11, s12);
+
+        // Now works
+        let s13 = &mut s10;
+        println!("{}", s13);
+
+        
     }
 
 }
