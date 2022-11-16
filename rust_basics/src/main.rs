@@ -39,6 +39,19 @@ fn take_mutable_reference(text: &mut String) {
 //     &String::from("Dangling");
 // }
 
+// Function returning a slice to last word in text
+fn last_word(text: &String) -> &str {
+    let bytes = text.as_bytes();
+
+    for (i, &item) in bytes.iter().rev().enumerate() {
+        if item == b' ' {
+            return &text[i-1..];
+        }
+    }
+
+    &text[..]
+}
+
 fn main()
 {
     println!("Rust basics");
@@ -259,7 +272,19 @@ fn main()
         let s13 = &mut s10;
         println!("{}", s13);
 
+        // String slices
+        let t1 = String::from("slice example");
+        let slice = &t1[0..5];
+        let example = &t1[6..];
         
+        println!("{}, {}", slice, example);
+
+        // Finds last word in sentence
+        let last = last_word(&t1);
+        
+        // Won't compile: cannot borrow `t1` as mutable because it is also borrowed as immutable
+        //t1.clear();
+        println!("{}", last);
     }
 
 }

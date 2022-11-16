@@ -226,7 +226,7 @@ Clean the project:
     }
 ```
 
-### Ownership
+### Ownership and slices
 
 Default move of heap-based objects, differs from shallow copy: it invalidates the first variable
 
@@ -335,4 +335,39 @@ Dangling references
     // fn dangling_reference() -> &String {
     //     &String::from("Dangling");
     // }
+```
+
+Slices
+
+Slice references to contiguous sequence of elements in collection. It does not have an ownership.
+
+```rust
+    // String slices
+    let t1 = String::from("slice example");
+    let slice = &t1[0..5];
+    let example = &t1[6..];
+    
+    println!("{}, {}", slice, example);
+```
+
+Slice reference returned from function
+
+```rust
+    fn last_word(text: &String) -> &str {
+        let bytes = text.as_bytes();
+
+        for (i, &item) in bytes.iter().rev().enumerate() {
+            if item == b' ' {
+                return &text[i-1..];
+            }
+        }
+
+        &text[..]
+    }
+
+    let last = last_word(&t1);
+    
+    // Won't compile: cannot borrow `t1` as mutable because it is also borrowed as immutable
+    //t1.clear();
+    println!("{}", last);
 ```
