@@ -4,6 +4,12 @@ pub struct Rectangle {
     pub height : u64,
 }
 
+#[derive(Debug)]
+pub struct Triangle {
+    pub base: f64,
+    pub height : f64,
+}
+
 // Method syntax
 impl Rectangle {
     pub fn area(&self) -> u64 {
@@ -30,6 +36,12 @@ pub fn area(rect: &Rectangle) -> u64 {
     rect.width * rect.height
 }
 
+impl Triangle {
+    pub fn area(&self) -> f64 {
+        0.5 * self.base * f64::from(self.height)
+    }
+}
+
 // Field init shorthand
 pub fn create_rect(width: u64, height: u64) -> Rectangle {
     Rectangle {
@@ -43,3 +55,9 @@ pub struct RGB(pub u8, pub u8, pub u8);
 
 #[derive(Debug)]
 pub struct AlwaysRed;
+
+#[derive(Debug)]
+pub enum Figure {
+    Rectangle,
+    Triangle
+}

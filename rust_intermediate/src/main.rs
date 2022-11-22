@@ -36,4 +36,10 @@ fn main() {
     // Unit-like structs without fields
     let red = AlwaysRed;
     println!("{:?}", red);
+
+    // Enumerations
+    let rect = Figure::Rectangle;
+    let tria = Figure::Triangle;
+    println!("{:?}", rect);
+    println!("{:?}", tria);
 }

@@ -119,3 +119,20 @@ Structures with unnamed fields, looking as a tuples
     let big = Rectangle::big_rect();
     println!("Small: {:?}, big: {:?}", small, big); // Small: Rectangle { width: 1, height: 1 }, big: Rectangle { width: 100, height: 100 }
 ```
+
+## Enumerations
+
+### Simple enumeration
+
+```rust
+    #[derive(Debug)]
+    pub enum Figure {
+        Rectangle(Rectangle),
+        Triangle(Triangle)
+    }
+
+    let rect = Figure::Rectangle;
+    let tria = Figure::Triangle;
+    println!("{:?}", rect); // Rectangle
+    println!("{:?}", tria); // Triangle
+```
