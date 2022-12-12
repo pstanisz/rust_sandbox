@@ -136,3 +136,44 @@ Structures with unnamed fields, looking as a tuples
     println!("{:?}", rect); // Rectangle
     println!("{:?}", tria); // Triangle
 ```
+
+### Enumeration with structure representation
+
+```rust
+    #[derive(Debug)]
+    pub struct CatProperty {
+        pub meow: String
+    }
+
+    #[derive(Debug)]
+    pub struct DogProperty {
+        pub bark: String
+    }
+
+    #[derive(Debug)]
+    pub enum Animal {
+        Cat(CatProperty),
+        Dog(DogProperty)
+    }
+
+    let cat = Animal::Cat(CatProperty{ meow: String::from("Meow!")});
+    let dog = Animal::Dog(DogProperty{ bark: String::from("Bark!")});
+
+    let mut animals : Vec<Animal> = Vec::new();
+    animals.push(cat);
+    animals.push(dog);
+
+    for animal in &animals {
+        match animal {
+            Animal::Cat(cat) => {
+                println!("Cat found: {}", cat.meow);
+            }
+            Animal::Dog(dog) => {
+                println!("Dog found: {}", dog.bark);
+            }
+        }
+    }
+
+    // Cat found: Meow!
+    // Dog found: Bark!
+```

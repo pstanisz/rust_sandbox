@@ -1,6 +1,8 @@
 pub mod figures;
+pub mod animals;
 
 use crate::figures::*;
+use crate::animals::*;
 
 fn main() {
     let rect = Rectangle {
@@ -42,4 +44,22 @@ fn main() {
     let tria = Figure::Triangle;
     println!("{:?}", rect);
     println!("{:?}", tria);
+
+    // Enumerations with structs
+    let cat = Animal::Cat(CatProperty{ meow: String::from("Meow!")});
+    let dog = Animal::Dog(DogProperty{ bark: String::from("Bark!")});
+    let mut animals : Vec<Animal> = Vec::new();
+    animals.push(cat);
+    animals.push(dog);
+
+    for animal in &animals {
+        match animal {
+            Animal::Cat(cat) => {
+                println!("Cat found: {}", cat.meow);
+            }
+            Animal::Dog(dog) => {
+                println!("Dog found: {}", dog.bark);
+            }
+        }
+    }
 }
