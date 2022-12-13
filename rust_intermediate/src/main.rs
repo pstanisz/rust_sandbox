@@ -62,4 +62,26 @@ fn main() {
             }
         }
     }
+
+    // Collections - vector
+    let mut v: Vec<i32> = Vec::new();
+    v.push(10);
+    v.push(50);
+
+    println!("{}", &v[0]);
+    let third: Option<&i32> = v.get(2);
+    match third {
+        Some(third) => println!("Third value: {}", third),
+        None => println!("Third value missing"),
+    }
+
+    v.remove(0);
+
+    for item in &mut v {
+        *item /= 10;
+    }
+
+    for item in &v {
+        println!("{}", item);
+    }
 }
