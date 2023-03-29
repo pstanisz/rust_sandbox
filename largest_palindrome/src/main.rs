@@ -40,10 +40,10 @@ fn first_idea() -> (u64, u64, u64)
                     break 'top;
                 }
 
-                num1 = num1 - 1;
+                num1 -= 1;
             }
         }
-        n = n - 1;
+        n -= 1;
     }
 
     (largest_palindrome, number1, number2)
